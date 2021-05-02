@@ -43,7 +43,6 @@ class AppHeader extends React.Component {
       }
       return <HeaderItem key={index + 1} icon={i} text={item.text} isActive={item.isActive} />
     });
-    console.log(headerElements); 
     return (
       <header className={appHeader.header}>
         <ul className={appHeader.container}>

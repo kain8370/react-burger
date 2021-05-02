@@ -1,5 +1,17 @@
 .app {
-  max-width: 2000;
+  max-width: 1920px;
+  height: 100vh;
   width: 100%;
-  padding: 40px;
+}
+
+.main {
+  max-height: calc(100vh - 98px);
+  max-width: 1240px;
+  width: 100%;
+  margin: auto;
+  padding-top: 40px;
+}
+
+.title {
+  margin-bottom: 20px;
 }
