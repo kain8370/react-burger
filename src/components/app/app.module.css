@@ -1,3 +1,5 @@
 .app {
-  color: red;
+  max-width: 2000;
+  width: 100%;
+  padding: 40px;
 }
