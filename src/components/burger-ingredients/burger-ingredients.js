@@ -2,7 +2,6 @@ import React from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import burgerIngredientsStyle from './burger-ingredients.module.css';
 import Ingredient from '../ingredient/ingredient';
-import data from '../../utils/data';
 
 class BurgerIngredients extends React.Component {
   state = {
@@ -19,10 +18,8 @@ class BurgerIngredients extends React.Component {
       'sauce': 'Соусы',
       'main': 'Начинки'
     }
-    const items = data.filter(item => this.state.current === dict[item.type]).map(item => {item.count = 0; return item;});
-    // this.setState({current: this.state.current, ingredients: items});
-    console.log('items');
-    return items.map((item, index) => <Ingredient key={index} price={item.price} image={item.image} name={item.name} />) 
+    const items = this.props.data.filter(item => this.state.current === dict[item.type]);
+    return items.map((item, index) => <Ingredient onAddIngredient={this.props.onAddIngredient} key={index} count={item.count} id={item._id} price={item.price} image={item.image} name={item.name} />) 
   }
 
   render() {
