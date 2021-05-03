@@ -2,6 +2,15 @@ import React from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import burgerIngredientsStyle from './burger-ingredients.module.css';
 import Ingredient from '../ingredient/ingredient';
+import PropTypes from 'prop-types';
+
+const burgerIngredientsPropTypes = PropTypes.shape({
+  _id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+});
 
 class BurgerIngredients extends React.Component {
   state = {
@@ -47,6 +56,10 @@ class BurgerIngredients extends React.Component {
       </section>
     );
   }
+}
+
+BurgerIngredients.propTypes = {
+  data: PropTypes.arrayOf(burgerIngredientsPropTypes.isRequired).isRequired
 }
 
 export default BurgerIngredients;

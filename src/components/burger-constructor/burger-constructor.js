@@ -1,7 +1,16 @@
 import React from 'react';
 import {ConstructorElement, DragIcon, Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
+import PropTypes from 'prop-types';
 
 import burgerConstructorStyle from './burger-constructor.module.css';
+
+const burgerConstructorPropTypes = PropTypes.shape({
+  _id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+});
 
 class BurgerConstructor extends React.Component {
 
@@ -79,6 +88,10 @@ class BurgerConstructor extends React.Component {
     </div>  
     );
   }
+}
+
+BurgerConstructor.propTypes = {
+  ingredients: PropTypes.arrayOf(burgerConstructorPropTypes.isRequired).isRequired
 }
 
 export default BurgerConstructor;
