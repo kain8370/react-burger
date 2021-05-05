@@ -10,7 +10,7 @@
 }
 
 .container {
-  height: calc(100vh - 195px - 98px);
+  height: calc(100vh - 235px - 98px);
   overflow-y: scroll;
   scrollbar-width: 8px;
   scrollbar-color: #8585ad #2f2f37;

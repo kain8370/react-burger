@@ -12,54 +12,56 @@ const burgerIngredientsPropTypes = PropTypes.shape({
   price: PropTypes.number.isRequired,
 });
 
-class BurgerIngredients extends React.Component {
-  state = {
-    current: 'Булки',
-  }
-
-  setCurrent = current => {
-    this.setState({current: current});
-  }
-
-  renderIngredients = () => {
+const BurgerIngredients = (props) => {
+    const [current , setCurrent] = React.useState("Булки")
+    const currentEl = Array.from(document.querySelectorAll('h3')).find(item => item.textContent === current);
+    if (currentEl) currentEl.scrollIntoView();
     const dict = {
       'bun': 'Булки',
-      'sauce': 'Соусы',
-      'main': 'Начинки'
+      'main': 'Начинки',
+      'sauce': 'Соусы'
     }
-    const items = this.props.data.filter(item => this.state.current === dict[item.type]);
-    return items.map((item, index) => <Ingredient onAddIngredient={this.props.onAddIngredient} key={index} count={item.count} id={item._id} price={item.price} image={item.image} name={item.name} />) 
-  }
-
-  render() {
-    const items = this.renderIngredients();
-    return (
-      <section className={burgerIngredientsStyle.burgerIngredients}>
-        <div style={{ display: 'flex', marginTop: 20, marginBottom: 40 }}>
-          <Tab className={burgerIngredientsStyle.tabItem} value="Булки" active={this.state.current === 'Булки'} style={ {width: '100%', color: 'black'} } onClick={this.setCurrent}>
-            Булки
-          </Tab>
-          <Tab value="Соусы" active={this.state.current === 'Соусы'} onClick={this.setCurrent}>
-            Соусы
-          </Tab>
-          <Tab value="Начинки" active={this.state.current === 'Начинки'} onClick={this.setCurrent}>
-            Начинки
-          </Tab>
-        </div>
-        <div className={burgerIngredientsStyle.container}>
-          <h3 className="text text_type_main-medium">{this.state.current}</h3>
+    const ingredients = [];
+    const propsValues = Object.values(props);
+    for (let i = 0; i < propsValues.length; i++) {
+      let res = (
+        <React.Fragment key={i}>
+          <h3 className="text text_type_main-medium">{dict[propsValues[i][i].type]}</h3>
           <div className={burgerIngredientsStyle.ingredientsContainer}>
-            {items}
+            {propsValues[i].map(item => {
+              return <Ingredient key={item._id} image={item.image} count={item.count} price={item.price} name={item.name} />
+            })}
           </div>
-        </div>
-        
-      </section>
-    );
-  }
+        </React.Fragment>
+      )
+      ingredients.push(res);
+    }
+
+  return (
+    <section className={burgerIngredientsStyle.burgerIngredients}>
+      <div style={{ display: 'flex', marginTop: 20, marginBottom: 40 }}>
+        <Tab className={burgerIngredientsStyle.tabItem} value="Булки" active={current === 'Булки'} style={ {width: '100%', color: 'black'} } onClick={setCurrent}>
+          Булки
+        </Tab>
+        <Tab value="Соусы" active={current === 'Соусы'} onClick={setCurrent}>
+          Соусы
+        </Tab>
+        <Tab value="Начинки" active={current === 'Начинки'} onClick={setCurrent}>
+          Начинки
+        </Tab>
+      </div>
+      <div className={burgerIngredientsStyle.container}>
+        {ingredients}
+      </div>
+      
+    </section>
+  );
 }
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(burgerIngredientsPropTypes.isRequired).isRequired
+  bun: PropTypes.arrayOf(burgerIngredientsPropTypes.isRequired).isRequired,
+  main: PropTypes.arrayOf(burgerIngredientsPropTypes.isRequired).isRequired,
+  sauce: PropTypes.arrayOf(burgerIngredientsPropTypes.isRequired).isRequired,
 }
 
 export default BurgerIngredients;
