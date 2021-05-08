@@ -1,0 +1,15 @@
+.ingredient {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.ingredient:hover {
+  cursor: pointer;
+}
+
+.name {
+  flex-grow: 1;
+  text-align: center;
+}

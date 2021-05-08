@@ -1,0 +1,30 @@
+.item {
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: #8585ad;
+}
+
+.item:hover {
+  cursor: pointer;
+}
+
+.item:nth-of-type(2) {
+  margin-left: 49px;
+}
+
+.item:nth-of-type(3) {
+  margin-left: 11%;
+  margin-right: auto;
+}
+
+.text {
+  margin-left: 8px;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.active {
+  color: #f2f2f3;
+}
