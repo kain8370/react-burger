@@ -1,5 +1,4 @@
 import React from 'react';
-import data from '../../utils/data.js';
 
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
@@ -7,13 +6,22 @@ import BurgerConstructor from '../burger-constructor/burger-constructor';
 
 import app from './app.module.css';
 
-const App = () => {
-  const types = ['bun', 'main', 'sauce'];
+const API_URL = 'https://norma.nomoreparties.space/api/ingredients';
 
-  const ingredients = types.reduce((acc, type) => {
-    acc[type] = data.filter(item => item.type === type);
-    return acc;
-  }, {});
+const App = () => {
+  const [data, setData] = React.useState([]);
+ 
+  React.useEffect(() => {
+    const getData = async () => {
+      const res = await fetch(API_URL);
+      const data = await res.json();
+      setData(data.data);
+    }
+    getData();
+    
+  }, []);
+
+  
 
   return (
     <div className={app.app}>
@@ -23,7 +31,7 @@ const App = () => {
           Соберите бургер
         </h2>
         <div className={app.wrapper}>
-          <BurgerIngredients {...ingredients} />
+          <BurgerIngredients data={data} />
           <BurgerConstructor ingredients={data} />
         </div>
       </main>

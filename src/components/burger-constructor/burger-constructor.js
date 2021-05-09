@@ -1,6 +1,7 @@
 import React from 'react';
 import {ConstructorElement, DragIcon, Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
+import ModalOverlay from '../modal-overlay/modal-overlay';
 
 import burgerConstructorStyle from './burger-constructor.module.css';
 
@@ -13,7 +14,11 @@ const burgerConstructorPropTypes = PropTypes.shape({
 });
 
 const BurgerConstructor = (props) => {
+
+  const [state, setState] = React.useState({visible: false, data: {}});
+
   let ingredients = props.ingredients.filter(item => item.type !== 'bun');
+
   let elements = '';
     elements = ingredients.map(item => {
     return (
@@ -26,6 +31,10 @@ const BurgerConstructor = (props) => {
       />
     </div>);
   });
+
+  const onToggleVisible = () => {
+    setState({ visible: !state.visible, data: {} });
+  }
 
   return (
     <div className={burgerConstructorStyle.wrapper}>
@@ -54,10 +63,11 @@ const BurgerConstructor = (props) => {
     </div> 
     <div className={burgerConstructorStyle.order}>
     <p className="text text_type_digits-medium">12345</p><div className="ml-3 mr-10"><CurrencyIcon type="primary" /></div>
-      <Button type="primary" size="medium">
+      <Button type="primary" size="medium" onClick={() => onToggleVisible()}>
         Оформить заказ
       </Button>
     </div>
+    {ingredients.length && state.visible && <ModalOverlay orderId={props.ingredients[0]._id} visible={state.visible} already={true} onChangeVisible={setState} />}
   </div>  
   );
 }

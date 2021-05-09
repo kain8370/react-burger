@@ -4,9 +4,10 @@ import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-c
 import ingredientStyel from './ingredient.module.css';
 
 const Ingredient = (props) => {
+  const id = props.id;
   const ingredientName = "text text_type_main-default " + ingredientStyel.name;
   return (
-    <div className={ingredientStyel.ingredient}>
+    <div className={ingredientStyel.ingredient} onClick={() => props.onToggleVisible(id)}>
       <img src={props.image} alt={props.name} />
       {props.count ? <Counter count={props.count} size="default" /> : null}
       <div className="text text_type_digits-medium mt-2 mb-2">{props.price} <CurrencyIcon type="primary" /></div>
