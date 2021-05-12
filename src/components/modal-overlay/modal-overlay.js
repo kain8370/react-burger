@@ -27,7 +27,7 @@ function ModalOverlay(props) {
 
   return ReactDOM.createPortal((
     <div style={props.visible ? {display: 'flex'} : {display: 'none'}} className={modalOverlayStyle.overlay} onClick={(e) => onClose(e)}>
-      <Modal data={props.data} onClose={onClose} already={props.already} />
+      <Modal data={props.data} onClose={onClose} already={props.already} children={props.children} />
     </div>
     ), document.getElementById('modal'));
 }

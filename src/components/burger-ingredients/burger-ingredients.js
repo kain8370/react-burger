@@ -4,6 +4,7 @@ import burgerIngredientsStyle from './burger-ingredients.module.css';
 import Ingredient from '../ingredient/ingredient';
 import PropTypes from 'prop-types';
 import ModalOverlay from '../modal-overlay/modal-overlay';
+import IngredientDetails from '../ingredient-details/ingredient-details';
 
 const burgerIngredientsPropTypes = PropTypes.shape({
   _id: PropTypes.string.isRequired,
@@ -16,8 +17,11 @@ const burgerIngredientsPropTypes = PropTypes.shape({
 const BurgerIngredients = (props) => {
     const [current , setCurrent] = React.useState("Булки")
     const [state, setState] = React.useState({visible: false, data: {}});
+
     const types = ['bun', 'main', 'sauce'];
+
     let currentIngredient = '';
+
     const ingredientsArr = types.reduce((acc, type) => {
       acc[type] = props.data.filter(item => item.type === type);
       return acc;
@@ -67,7 +71,7 @@ const BurgerIngredients = (props) => {
       <div className={burgerIngredientsStyle.container}>
         {ingredients}
       </div>
-      {props.data.length && state.visible && <ModalOverlay data={state.data} visible={state.visible} already={false} onChangeVisible={setState} />}
+      {props.data.length && state.visible && <ModalOverlay visible={state.visible} already={false} onChangeVisible={setState}><IngredientDetails data={state.data} /></ModalOverlay>}
     </section>
   );
 }

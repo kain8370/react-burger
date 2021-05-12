@@ -2,6 +2,7 @@ import React from 'react';
 import {ConstructorElement, DragIcon, Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import ModalOverlay from '../modal-overlay/modal-overlay';
+import OrderDetails from '../order-details/order-details';
 
 import burgerConstructorStyle from './burger-constructor.module.css';
 
@@ -67,7 +68,7 @@ const BurgerConstructor = (props) => {
         Оформить заказ
       </Button>
     </div>
-    {ingredients.length && state.visible && <ModalOverlay orderId={props.ingredients[0]._id} visible={state.visible} already={true} onChangeVisible={setState} />}
+    {ingredients.length && state.visible && <ModalOverlay orderId={props.ingredients[0]._id} visible={state.visible} onChangeVisible={setState}><OrderDetails /></ModalOverlay>}
   </div>  
   );
 }
