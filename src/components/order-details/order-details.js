@@ -12,7 +12,7 @@ const OrderDetails = () => {
   const classNameVector1 = `${orderDetailsStyle.vector} ${orderDetailsStyle.vector1}`;
   return (
     <div className={orderDetailsStyle.container}>
-      <div className="text text_type_digits-large"> 
+      <div className="text text_type_digits-large mt-20"> 
         034536
       </div>
       <div className="text text_type_main-medium mt-8 mb-15">

@@ -19,6 +19,7 @@ const BurgerIngredients = (props) => {
     const [state, setState] = React.useState({visible: false, data: {}});
 
     const types = ['bun', 'main', 'sauce'];
+    const modalTitle = 'Детали ингредиента';
 
     let currentIngredient = '';
 
@@ -71,7 +72,7 @@ const BurgerIngredients = (props) => {
       <div className={burgerIngredientsStyle.container}>
         {ingredients}
       </div>
-      {props.data.length && state.visible && <ModalOverlay visible={state.visible} already={false} onChangeVisible={setState}><IngredientDetails data={state.data} /></ModalOverlay>}
+      {props.data.length && state.visible && <ModalOverlay visible={state.visible} already={false} onChangeVisible={setState}><IngredientDetails title={modalTitle} data={state.data} /></ModalOverlay>}
     </section>
   );
 }

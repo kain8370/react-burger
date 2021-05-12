@@ -1,4 +1,5 @@
 .modal {
+  position: relative;
   max-width: 720px;
   width: 100%;
   padding: 40px 40px 0;
@@ -7,16 +8,10 @@
   background-color: #1c1c21;
 }
 
-.header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0;
-}
-
-.title {
-  margin: 0;
+.close {
+  position: absolute;
+  right: 40px;
+  top: 47px;
 }
 
 .close:hover {
