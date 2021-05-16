@@ -6,14 +6,16 @@ import vector2 from '../../images/vector2.svg';
 import vector3 from '../../images/vector3.svg';
 import icon from '../../images/icon.svg';
 
+import PropTypes from 'prop-types';
 
 
-const OrderDetails = () => {
+
+const OrderDetails = (props) => {
   const classNameVector1 = `${orderDetailsStyle.vector} ${orderDetailsStyle.vector1}`;
   return (
     <div className={orderDetailsStyle.container}>
       <div className="text text_type_digits-large mt-20"> 
-        034536
+        {props.numberOrder}
       </div>
       <div className="text text_type_main-medium mt-8 mb-15">
         идентификатор заказа
@@ -32,6 +34,10 @@ const OrderDetails = () => {
       </div>
     </div>
   )
+}
+
+OrderDetails.propTypes = {
+  numberOrder: PropTypes.number.isRequired
 }
 
 export default OrderDetails;

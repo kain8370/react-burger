@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 
+import { DataContext } from '../../services/dataContext';
+
 const burgerIngredientsPropTypes = PropTypes.shape({
   _id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
@@ -17,14 +19,14 @@ const burgerIngredientsPropTypes = PropTypes.shape({
 const BurgerIngredients = (props) => {
     const [current , setCurrent] = React.useState("Булки")
     const [state, setState] = React.useState({visible: false, data: {}});
-
+    const [data] = React.useContext(DataContext);
     const types = ['bun', 'main', 'sauce'];
     const modalTitle = 'Детали ингредиента';
-
+    if (!Array.isArray(data)) return <div></div>;
     let currentIngredient = '';
 
     const ingredientsArr = types.reduce((acc, type) => {
-      acc[type] = props.data.filter(item => item.type === type);
+      acc[type] = data.filter(item => item.type === type);
       return acc;
     }, {});
 
@@ -37,10 +39,9 @@ const BurgerIngredients = (props) => {
     }
 
     const onToggleVisible = (id) => {
-      currentIngredient = props.data.find(item => item._id === id);
+      currentIngredient = data.find(item => item._id === id);
       setState({ visible: !state.visible, data: currentIngredient});
     }
-
     const ingredients = [];
     const propsValues = Object.values(ingredientsArr);
     for (let i = 0; i < propsValues.length; i++) {
@@ -49,7 +50,7 @@ const BurgerIngredients = (props) => {
           <h3 className="text text_type_main-medium">{dict[propsValues[i][i]?.type]}</h3>
           <div className={burgerIngredientsStyle.ingredientsContainer}>
             {propsValues[i].map(item => {
-              return <Ingredient key={item._id} image={item.image} count={item.count} price={item.price} name={item.name} visible={state.visible} id={item._id} onToggleVisible={onToggleVisible} />
+              return <Ingredient addIngredient={props.addIngredient} key={item._id} type={item.type} image={item.image} count={item._id === props.addedBuns?._id ? props.addedBuns?.count : item.count} price={item.price} name={item.name} visible={state.visible} id={item._id} onToggleVisible={onToggleVisible} />
             })}
           </div>
         </React.Fragment>
@@ -72,13 +73,14 @@ const BurgerIngredients = (props) => {
       <div className={burgerIngredientsStyle.container}>
         {ingredients}
       </div>
-      {props.data.length && state.visible && <ModalOverlay visible={state.visible} already={false} onChangeVisible={setState}><IngredientDetails title={modalTitle} data={state.data} /></ModalOverlay>}
+      {data.length && state.visible && <ModalOverlay visible={state.visible} already={false} onChangeVisible={setState}><IngredientDetails title={modalTitle} data={state.data} /></ModalOverlay>}
     </section>
   );
 }
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(burgerIngredientsPropTypes)
+  addedBuns: burgerIngredientsPropTypes,
+  addIngredient: PropTypes.func.isRequired
 }
 
 export default BurgerIngredients;

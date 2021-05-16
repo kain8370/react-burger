@@ -3,10 +3,15 @@ import {ConstructorElement, DragIcon, Button, CurrencyIcon} from '@ya.praktikum/
 import PropTypes from 'prop-types';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import OrderDetails from '../order-details/order-details';
+import Bun from '../bun/bun';
+
+import ApiService from '../../services/api-service';
+
+import { DataContext } from '../../services/dataContext';
 
 import burgerConstructorStyle from './burger-constructor.module.css';
 
-const burgerConstructorPropTypes = PropTypes.shape({
+const addedBunsPropTypes = PropTypes.shape({
   _id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
@@ -14,24 +19,78 @@ const burgerConstructorPropTypes = PropTypes.shape({
   price: PropTypes.number.isRequired,
 });
 
+const apiService = new ApiService();
+
 const BurgerConstructor = (props) => {
 
   const [state, setState] = React.useState({visible: false, data: {}});
+  const [data] = React.useContext(DataContext);
+  const [totalPrice, setTotalPrice] = React.useState(0);
+  const [numberOrder, setNumberOrder] = React.useState();
 
-  let ingredients = props.ingredients.filter(item => item.type !== 'bun');
-
-  let elements = '';
-    elements = ingredients.map(item => {
-    return (
-    <div key={item._id} className={burgerConstructorStyle.ingredient}>
-      <span className={burgerConstructorStyle.dragIcon}><DragIcon /></span>
-      <ConstructorElement
-      text={item.name}
-      price={item.price}
-      thumbnail={item.image}
-      />
-    </div>);
+  const elements =  data && data.map((item, index) => {
+    if (item.count && item.type !== 'bun') {
+      const arr = [];
+      for (let i = 0; i < item.count; i++) {
+        arr.push(<div key={index + i} className={burgerConstructorStyle.ingredient}>
+          <span className={burgerConstructorStyle.dragIcon}><DragIcon /></span>
+          <ConstructorElement
+          text={item.name}
+          price={item.price}
+          thumbnail={item.image}
+          handleClose={() => {
+          props.incrementCount(item._id);
+          }}
+        />
+        </div>);
+      }
+      return arr;
+    }
   });
+
+  const addedBun = data && data.find(item => item.type === 'bun' && item.count);
+
+  const getTotalPrice = () => {
+    const ingredientsPrice = data.reduce((acc, item) => {
+      if (!item.count) return acc;
+      return acc += item.price * item.count;
+    }, 0);
+    const bunsPrice = props.addedBuns ?  props.addedBuns.price * props.addedBuns.count : 0;
+    setTotalPrice(ingredientsPrice + bunsPrice);
+  }
+
+  const sendOrder = () => {
+    const orderData = data.reduce((acc, item) => {
+      if (item.count) {
+        const tmpArr = []
+        for (let i = 0; i < item.count; i++) {
+          tmpArr.push(item._id);
+        }
+        acc.push(...tmpArr);
+      }
+      return acc;
+    }, []);
+    orderData.push(props.addedBuns._id);
+    orderData.push(props.addedBuns._id);
+    apiService.sendOrder(orderData)
+      .then(data => setNumberOrder(data.order.number))
+      .catch(err => console.log(err))
+  }
+
+  // const getTotalPrice = () => {
+  //   let ingredientsPrice = Object.entries(stateCount)
+  //     ingredientsPrice = ingredientsPrice.reduce((acc, [id, count]) => {
+  //       const currentIngredient = props.addedIngredients.find(item => item._id === id);
+  //       if (currentIngredient) return acc + currentIngredient.price * count;
+  //       return acc;
+  //     }, 0)
+  //   const bunsPrice = props.addedBuns ? stateCount[props.addedBuns._id] * props.addedBuns.price : 0;
+  //   setTotalPrice(ingredientsPrice + bunsPrice);
+  // }
+
+  React.useEffect(() => {
+   data && getTotalPrice();
+  })
 
   const onToggleVisible = () => {
     setState({ visible: !state.visible, data: {} });
@@ -39,42 +98,33 @@ const BurgerConstructor = (props) => {
 
   return (
     <div className={burgerConstructorStyle.wrapper}>
-      <div className="mb-4 mr-3">
-          <ConstructorElement
-          type="top"
-          isLocked={true}
-          text='Краторная булка N-200i (верх)'
-          price='1255'
-          thumbnail="https://code.s3.yandex.net/react/code/bun-02.png"
-          />
-        </div>
+      {props.addedBuns && <Bun type='top' text={`${props.addedBuns.name} (верх)`}
+          price={props.addedBuns.price}
+          id={props.addedBuns._id}
+          thumbnail={props.addedBuns.image} />}
       <section className={burgerConstructorStyle.container}>
         
         {elements}   
           
       </section>
-      <div className="mb-4 mt-4 mr-3">
-      <ConstructorElement
-      type="bottom"
-      isLocked={true}
-      text='Краторная булка N-200i (низ)'
-      price='1255'
-      thumbnail="https://code.s3.yandex.net/react/code/bun-02.png"
-      />
-    </div> 
+      {props.addedBuns && <Bun type='bottom' text={`${props.addedBuns.name} (низ)`}
+          price={props.addedBuns.price}
+          id={props.addedBuns._id}
+          thumbnail={props.addedBuns.image} />} 
     <div className={burgerConstructorStyle.order}>
-    <p className="text text_type_digits-medium">12345</p><div className="ml-3 mr-10"><CurrencyIcon type="primary" /></div>
-      <Button type="primary" size="medium" onClick={() => onToggleVisible()}>
+    <p className="text text_type_digits-medium">{totalPrice}</p><div className="ml-3 mr-10"><CurrencyIcon type="primary" /></div>
+      <Button type="primary" size="medium" onClick={() => {sendOrder(); onToggleVisible()}}>
         Оформить заказ
       </Button>
     </div>
-    {ingredients.length && state.visible && <ModalOverlay orderId={props.ingredients[0]._id} visible={state.visible} onChangeVisible={setState}><OrderDetails /></ModalOverlay>}
+    { state.visible && <ModalOverlay visible={state.visible} onChangeVisible={setState}><OrderDetails numberOrder={numberOrder} /></ModalOverlay>}
   </div>  
   );
 }
 
 BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(burgerConstructorPropTypes.isRequired).isRequired
+  addedBuns: addedBunsPropTypes,
+  incrementCount: PropTypes.func
 }
 
 export default BurgerConstructor;
