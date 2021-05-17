@@ -29,8 +29,8 @@ const BurgerConstructor = (props) => {
   const [numberOrder, setNumberOrder] = React.useState();
 
   const elements =  data && data.map((item, index) => {
+    const arr = [];
     if (item.count && item.type !== 'bun') {
-      const arr = [];
       for (let i = 0; i < item.count; i++) {
         arr.push(<div key={index + i} className={burgerConstructorStyle.ingredient}>
           <span className={burgerConstructorStyle.dragIcon}><DragIcon /></span>
@@ -44,11 +44,9 @@ const BurgerConstructor = (props) => {
         />
         </div>);
       }
-      return arr;
     }
+    return arr;
   });
-
-  const addedBun = data && data.find(item => item.type === 'bun' && item.count);
 
   const getTotalPrice = () => {
     const ingredientsPrice = data.reduce((acc, item) => {
@@ -70,8 +68,8 @@ const BurgerConstructor = (props) => {
       }
       return acc;
     }, []);
-    orderData.push(props.addedBuns._id);
-    orderData.push(props.addedBuns._id);
+    props.addedBuns && orderData.push(props.addedBuns._id);
+    props.addedBuns && orderData.push(props.addedBuns._id);
     apiService.sendOrder(orderData)
       .then(data => setNumberOrder(data.order.number))
       .catch(err => console.log(err))
