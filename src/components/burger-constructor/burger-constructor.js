@@ -1,128 +1,83 @@
 import React from 'react';
-import {ConstructorElement, DragIcon, Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
-import ModalOverlay from '../modal-overlay/modal-overlay';
-import OrderDetails from '../order-details/order-details';
+import {Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import Bun from '../bun/bun';
-
-import ApiService from '../../services/api-service';
-
-import { DataContext } from '../../services/dataContext';
+import { useSelector, useDispatch } from 'react-redux';
+import { useDrop } from 'react-dnd';
+import ConstructorIngredient from '../constructor-ingredient/constructor-ingredient';
 
 import burgerConstructorStyle from './burger-constructor.module.css';
+import { ADD_INGREDIENT, ADD_BUN, SET_TOTAL_PRICE } from '../../services/constants';
+import { getOrder } from '../../services/actions/get-order';
 
-const addedBunsPropTypes = PropTypes.shape({
-  _id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-});
+const BurgerConstructor = () => {
 
-const apiService = new ApiService();
+  const { ingredients, addedIngredients, addedBuns, ingredientsCount, totalPrice } = useSelector(store => ({ ingredients: store.ingredientsReducer.ingredients, addedIngredients: store.ingredientsReducer.addedIngredients, addedBuns: store.ingredientsReducer.addedBuns, ingredientsCount: store.ingredientsReducer.ingredientsCount, totalPrice: store.ingredientsReducer.totalPrice }));
+  const dispatch = useDispatch();
 
-const BurgerConstructor = (props) => {
-
-  const [state, setState] = React.useState({visible: false, data: {}});
-  const [data] = React.useContext(DataContext);
-  const [totalPrice, setTotalPrice] = React.useState(0);
-  const [numberOrder, setNumberOrder] = React.useState();
-
-  const elements =  data && data.map((item, index) => {
-    const arr = [];
-    if (item.count && item.type !== 'bun') {
-      for (let i = 0; i < item.count; i++) {
-        arr.push(<div key={index + i} className={burgerConstructorStyle.ingredient}>
-          <span className={burgerConstructorStyle.dragIcon}><DragIcon /></span>
-          <ConstructorElement
-          text={item.name}
-          price={item.price}
-          thumbnail={item.image}
-          handleClose={() => {
-          props.incrementCount(item._id);
-          }}
-        />
-        </div>);
-      }
+  const [, dropTarget] = useDrop({
+    accept: 'ingredient',
+    drop(itemId) {
+      const ingredient = ingredients.find(item => item._id === itemId.id);
+      ingredient?.type === 'bun' ? dispatch({ type: ADD_BUN, ingredient}) :  dispatch({ type: ADD_INGREDIENT, ingredient})
     }
-    return arr;
-  });
+  })
 
-  const getTotalPrice = () => {
-    const ingredientsPrice = data.reduce((acc, item) => {
-      if (!item.count) return acc;
-      return acc += item.price * item.count;
-    }, 0);
-    const bunsPrice = props.addedBuns ?  props.addedBuns.price * props.addedBuns.count : 0;
-    setTotalPrice(ingredientsPrice + bunsPrice);
+  const elements = addedIngredients.map((item, index) => {
+    return (
+      <ConstructorIngredient key={index} item={item} index={index} />
+    )
+  })
+
+  const setTotalPrice = () => {
+    console.log(addedIngredients);
+    const ingredientsPrice = addedIngredients.reduce((acc, item) =>  acc + item.price, 0)
+    const bunsPrice = addedBuns?.bun ? addedBuns.bun.price * addedBuns.count : 0;
+    dispatch({type: SET_TOTAL_PRICE, totalPrice: ingredientsPrice + bunsPrice})
   }
 
   const sendOrder = () => {
-    const orderData = data.reduce((acc, item) => {
-      if (item.count) {
+    const orderData = Object.entries(ingredientsCount).reduce((acc, [id, count]) => {
+      if (count) {
         const tmpArr = []
-        for (let i = 0; i < item.count; i++) {
-          tmpArr.push(item._id);
+        for (let i = 0; i < count; i++) {
+          tmpArr.push(id);
         }
         acc.push(...tmpArr);
       }
       return acc;
     }, []);
-    props.addedBuns && orderData.push(props.addedBuns._id);
-    props.addedBuns && orderData.push(props.addedBuns._id);
-    apiService.sendOrder(orderData)
-      .then(data => setNumberOrder(data.order.number))
-      .catch(err => console.log(err))
+    addedBuns.bun?._id && orderData.push(addedBuns.bun._id);
+    dispatch(getOrder(orderData));
   }
-
-  // const getTotalPrice = () => {
-  //   let ingredientsPrice = Object.entries(stateCount)
-  //     ingredientsPrice = ingredientsPrice.reduce((acc, [id, count]) => {
-  //       const currentIngredient = props.addedIngredients.find(item => item._id === id);
-  //       if (currentIngredient) return acc + currentIngredient.price * count;
-  //       return acc;
-  //     }, 0)
-  //   const bunsPrice = props.addedBuns ? stateCount[props.addedBuns._id] * props.addedBuns.price : 0;
-  //   setTotalPrice(ingredientsPrice + bunsPrice);
-  // }
 
   React.useEffect(() => {
-   data && getTotalPrice();
-  })
-
-  const onToggleVisible = () => {
-    setState({ visible: !state.visible, data: {} });
-  }
+   setTotalPrice();
+  }, [addedIngredients, addedBuns])
 
   return (
-    <div className={burgerConstructorStyle.wrapper}>
-      {props.addedBuns && <Bun type='top' text={`${props.addedBuns.name} (верх)`}
-          price={props.addedBuns.price}
-          id={props.addedBuns._id}
-          thumbnail={props.addedBuns.image} />}
+    <div className={burgerConstructorStyle.wrapper} ref={dropTarget}>
+      {addedBuns.bun && <Bun type='top' text={`${addedBuns.bun.name} (верх)`}
+          price={addedBuns.bun.price}
+          id={addedBuns.bun._id}
+          thumbnail={addedBuns.bun.image} />}
       <section className={burgerConstructorStyle.container}>
         
         {elements}   
           
       </section>
-      {props.addedBuns && <Bun type='bottom' text={`${props.addedBuns.name} (низ)`}
-          price={props.addedBuns.price}
-          id={props.addedBuns._id}
-          thumbnail={props.addedBuns.image} />} 
+      {addedBuns.bun && <Bun type='bottom' text={`${addedBuns.bun.name} (низ)`}
+          price={addedBuns.bun.price}
+          id={addedBuns.bun._id}
+          thumbnail={addedBuns.bun.image} />} 
     <div className={burgerConstructorStyle.order}>
     <p className="text text_type_digits-medium">{totalPrice}</p><div className="ml-3 mr-10"><CurrencyIcon type="primary" /></div>
-      <Button type="primary" size="medium" onClick={() => {sendOrder(); onToggleVisible()}}>
+      <Button type="primary" size="medium" onClick={() => {sendOrder()}}>
         Оформить заказ
       </Button>
     </div>
-    { state.visible && <ModalOverlay visible={state.visible} onChangeVisible={setState}><OrderDetails numberOrder={numberOrder} /></ModalOverlay>}
+    
   </div>  
   );
-}
-
-BurgerConstructor.propTypes = {
-  addedBuns: addedBunsPropTypes,
-  incrementCount: PropTypes.func
 }
 
 export default BurgerConstructor;

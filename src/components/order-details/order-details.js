@@ -5,17 +5,21 @@ import vector1 from '../../images/vector1.svg';
 import vector2 from '../../images/vector2.svg';
 import vector3 from '../../images/vector3.svg';
 import icon from '../../images/icon.svg';
+import { useSelector } from 'react-redux';
 
 import PropTypes from 'prop-types';
 
 
 
-const OrderDetails = (props) => {
+const OrderDetails = () => {
+
+  const order = useSelector( store => store.ingredientsReducer.order );
+  console.log(order);
   const classNameVector1 = `${orderDetailsStyle.vector} ${orderDetailsStyle.vector1}`;
   return (
     <div className={orderDetailsStyle.container}>
       <div className="text text_type_digits-large mt-20"> 
-        {props.numberOrder}
+        {order.orderNumber}
       </div>
       <div className="text text_type_main-medium mt-8 mb-15">
         идентификатор заказа

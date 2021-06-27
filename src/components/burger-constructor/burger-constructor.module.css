@@ -21,18 +21,6 @@
   background-color: #8585ad;
 }
 
-.ingredient {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  align-items: center;
-}
-
-.ingredient *:last-child {
-  flex-grow: 1;
-}
-
 .wrapper {
   max-width: 600px;
   display: flex;
@@ -48,8 +36,4 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-}
-
-.dragIcon:hover {
-  cursor: pointer;
 }

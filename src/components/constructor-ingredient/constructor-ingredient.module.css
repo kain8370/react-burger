@@ -1,0 +1,15 @@
+.ingredient {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  align-items: center;
+}
+
+.ingredient *:last-child {
+  flex-grow: 1;
+}
+
+.dragIcon:hover {
+  cursor: pointer;
+}
