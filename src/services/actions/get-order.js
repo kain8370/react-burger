@@ -17,6 +17,7 @@ export const getOrder = (data) => {
     })
       .then(res => {
         if (res.ok) return res.json();
+        return Promise.reject(res.status)
       })
       .then(res => {
         console.log(res);

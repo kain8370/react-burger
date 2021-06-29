@@ -7,7 +7,7 @@ import { getIngredients } from '../../services/actions/ingredients';
 
 const BurgerIngredients = () => {
     const [current , setCurrent] = React.useState("Булки")
-    const types = ['bun', 'main', 'sauce'];
+    const types = ['bun', 'sauce', 'main'];
     const ingredients = useSelector(store => store.ingredientsReducer.ingredients);
 
     const containerRef = React.useRef(null);
@@ -21,17 +21,22 @@ const BurgerIngredients = () => {
       dispatch(getIngredients());
     }, [dispatch])
 
-    const onScroll = (e) => {
+    const onScroll = () => {
 
-      if (e.target.scrollTop > 272 && e.target.scrollTop < 1470) {
-        setCurrent("Начинки")
-      } else if (e.target.scrollTop >= 1470) {
-        setCurrent("Соусы")
+      const dWM = containerRef.current.getBoundingClientRect().top - mainRef.current.getBoundingClientRect().top;
+      const dWB = containerRef.current.getBoundingClientRect().top - bunRef.current.getBoundingClientRect().top;
+      const dWS = containerRef.current.getBoundingClientRect().top - sauceRef.current.getBoundingClientRect().top;
+
+      if (Math.abs(dWM) < Math.abs(dWB) && Math.abs(dWM) < Math.abs(dWS)) {
+        setCurrent("Начинки");
+      } else if (Math.abs(dWS) < Math.abs(dWB) && Math.abs(dWS) < Math.abs(dWM)) {
+        setCurrent("Соусы");
       } else {
-        setCurrent("Булки")
+        setCurrent("Булки");
       }
 
     }
+    const currentEl = Array.from(document.querySelectorAll('h3')).find(item => item.textContent === current);
 
     if (!ingredients.length) return <div></div>;
     const ingredientsArr = types.reduce((acc, type) => {
@@ -39,17 +44,18 @@ const BurgerIngredients = () => {
       return acc;
     }, {});
 
-    const currentEl = Array.from(document.querySelectorAll('h3')).find(item => item.textContent === current);
-    console.log(currentEl)
-    
-    if (currentEl) currentEl.scrollIntoView();
     const dict = {
       'bun': 'Булки',
-      'main': 'Начинки',
-      'sauce': 'Соусы'
+      'sauce': 'Соусы',
+      'main': 'Начинки'
     }
 
+    const onTabClick = (e) => {
+      Array.from(document.querySelectorAll('h3')).find(item => item.textContent === e).scrollIntoView();
+    }
+    console.log(currentEl);
     const ingredientsElem = [];
+
     const propsValues = Object.values(ingredientsArr);
     for (let i = 0; i < propsValues.length; i++) {
       let res = (
@@ -71,13 +77,13 @@ const BurgerIngredients = () => {
   return (
     <section className={burgerIngredientsStyle.burgerIngredients}>
       <div style={{ display: 'flex', marginBottom: 40 }}>
-        <Tab className={burgerIngredientsStyle.tabItem} value="Булки" active={current === 'Булки'} style={ {width: '100%', color: 'black'} } onClick={setCurrent} ref={bunRef}>
+        <Tab className={burgerIngredientsStyle.tabItem} value="Булки" active={current === 'Булки'} style={ {width: '100%', color: 'black'} } onClick={(e) => {setCurrent(e); onTabClick(e);}} ref={bunRef}>
           Булки
         </Tab>
-        <Tab value="Соусы" active={current === 'Соусы'} onClick={setCurrent} ref={sauceRef}>
+        <Tab value="Соусы" active={current === 'Соусы'} onClick={(e) => {setCurrent(e); onTabClick(e);}} ref={sauceRef}>
           Соусы
         </Tab>
-        <Tab value="Начинки" active={current === 'Начинки'} onClick={setCurrent} ref={mainRef}>
+        <Tab value="Начинки" active={current === 'Начинки'} onClick={(e) => {setCurrent(e); onTabClick(e);}} ref={mainRef}>
           Начинки
         </Tab>
       </div>
