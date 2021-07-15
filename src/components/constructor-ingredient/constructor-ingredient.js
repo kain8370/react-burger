@@ -15,7 +15,7 @@ const constructorIngredientPropTypes = PropTypes.shape({
   price: PropTypes.number.isRequired,
 });
 
-const ConstructorIngredient = (props) => {
+const ConstructorIngredient = React.memo((props) => {
   const ref = React.useRef(null);
   const dispatch = useDispatch();
 
@@ -73,7 +73,7 @@ const ConstructorIngredient = (props) => {
       handleClose={e => dispatch({type: REMOVE_INGREDIENT, ingredient: props.item})}/>
     </div>
   )
-}
+})
 
 ConstructorIngredient.propTypes = {
   item: constructorIngredientPropTypes,

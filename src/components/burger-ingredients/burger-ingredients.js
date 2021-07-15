@@ -5,7 +5,7 @@ import Ingredient from '../ingredient/ingredient';
 import { useSelector, useDispatch } from 'react-redux';
 import { getIngredients } from '../../services/actions/ingredients';
 
-const BurgerIngredients = () => {
+const BurgerIngredients = React.memo(() => {
     const [current , setCurrent] = React.useState("Булки")
     const types = ['bun', 'sauce', 'main'];
     const ingredients = useSelector(store => store.ingredientsReducer.ingredients);
@@ -36,7 +36,6 @@ const BurgerIngredients = () => {
       }
 
     }
-    const currentEl = Array.from(document.querySelectorAll('h3')).find(item => item.textContent === current);
 
     if (!ingredients.length) return <div></div>;
     const ingredientsArr = types.reduce((acc, type) => {
@@ -53,7 +52,7 @@ const BurgerIngredients = () => {
     const onTabClick = (e) => {
       Array.from(document.querySelectorAll('h3')).find(item => item.textContent === e).scrollIntoView();
     }
-    console.log(currentEl);
+    
     const ingredientsElem = [];
 
     const propsValues = Object.values(ingredientsArr);
@@ -93,6 +92,6 @@ const BurgerIngredients = () => {
       </div>
     </section>
   );
-}
+})
 
 export default BurgerIngredients;

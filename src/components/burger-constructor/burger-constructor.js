@@ -24,7 +24,7 @@ const BurgerConstructor = () => {
 
   const elements = addedIngredients.map((item, index) => {
     return (
-      <ConstructorIngredient key={index} item={item} index={index} />
+    <ConstructorIngredient key={index} item={item} index={index} />
     )
   })
 
