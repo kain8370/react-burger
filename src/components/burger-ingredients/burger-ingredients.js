@@ -76,13 +76,13 @@ const BurgerIngredients = React.memo(() => {
   return (
     <section className={burgerIngredientsStyle.burgerIngredients}>
       <div style={{ display: 'flex', marginBottom: 40 }}>
-        <Tab className={burgerIngredientsStyle.tabItem} value="Булки" active={current === 'Булки'} style={ {width: '100%', color: 'black'} } onClick={(e) => {setCurrent(e); onTabClick(e);}} ref={bunRef}>
+        <Tab className={burgerIngredientsStyle.tabItem} value="Булки" active={current === 'Булки'} style={ {width: '100%', color: 'black'} } onClick={(e) => {setCurrent(e); onTabClick(e);}}>
           Булки
         </Tab>
-        <Tab value="Соусы" active={current === 'Соусы'} onClick={(e) => {setCurrent(e); onTabClick(e);}} ref={sauceRef}>
+        <Tab value="Соусы" active={current === 'Соусы'} onClick={(e) => {setCurrent(e); onTabClick(e);}}>
           Соусы
         </Tab>
-        <Tab value="Начинки" active={current === 'Начинки'} onClick={(e) => {setCurrent(e); onTabClick(e);}} ref={mainRef}>
+        <Tab value="Начинки" active={current === 'Начинки'} onClick={(e) => {setCurrent(e); onTabClick(e);}}>
           Начинки
         </Tab>
       </div>

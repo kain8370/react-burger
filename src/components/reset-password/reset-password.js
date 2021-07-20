@@ -13,8 +13,8 @@ const ResetPassword = () => {
   const classNameInputContainer = `mt-6 ${resetPasswordStyle.inputContainer}`;
 
   const { resetPasswordSuccess } = useSelector(store => ({ resetPasswordSuccess: store.userReducer.resetPasswordSuccess }));
-  const [ password, setPassword ] = React.useState();
-  const [ code, setCode ] = React.useState();
+  const [ password, setPassword ] = React.useState('');
+  const [ code, setCode ] = React.useState('');
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -40,10 +40,10 @@ const ResetPassword = () => {
       <h3 className="text text_type_main-medium mb-0 mt-0">Восстановление пароля</h3>
       <form className={resetPasswordStyle.resetPasswordForm} onSubmit={onSubmit}>
         <div className={classNameInputContainer}>
-          <Input type="password" name="password" size="default" placeholder="Введите новый пароль" icon="ShowIcon" onChange={onChange} />
+          <Input type="password" name="password" size="default" placeholder="Введите новый пароль" icon="ShowIcon" onChange={onChange} value={password} />
         </div >
         <div className={classNameInputContainer}>
-          <Input type="text" name="code" placeholder="Введите код из письма" size="default" onChange={onChange} />
+          <Input type="text" name="code" placeholder="Введите код из письма" size="default" onChange={onChange} value={code} />
         </div>
         <div className="mb-20 mt-6">
           <Button type="primary" size="medium">

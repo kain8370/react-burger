@@ -3,7 +3,7 @@ import React from 'react';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
-import ModalOverlay from '../modal-overlay/modal-overlay';
+import Modal from '../modal/modal';
 import { useSelector } from 'react-redux';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
@@ -28,25 +28,17 @@ import app from './app.module.css';
 const App = () => {
   const ModalSwitch = () => {
 
-    const { currentIngredientVisible,
-      order } = useSelector(store => ({
-                                                  currentIngredientVisible: store.ingredientsReducer.currentIngredientVisible,
-                                                  addedIngredients: store.ingredientsReducer.addedIngredients,
-                                                  order: store.ingredientsReducer.order
-                                                  }));
-
     const user = useSelector(store => store.userReducer.user);
     const dispatch = useDispatch();
     const location = useLocation();
     const history = useHistory();
     let background = history.action === 'PUSH' && location.state && location.state.background;
-    console.log(location.state);
 
     React.useEffect(() => {
     if (!user) {
       dispatch(getUser());
     }
-    }, []);
+    }, [dispatch, user]);
 
     const mainContent = (
     <>
@@ -88,21 +80,21 @@ const App = () => {
                 <ProtectedRoute path="/profile/orders" exact={true}>
                   <ProfilePage />
                 </ProtectedRoute>
-                <ProtectedRoute path="/feed" exact={true}>
+                <Route path="/feed" exact={true}>
                   <FeedPage />
-                </ProtectedRoute>
+                </Route>
                 <Route path="/ingredients/:id" exact={true}>
                  <IngredientPage />
                 </Route>
                 <ProtectedRoute path="/order" exact={true}>
-                  <ModalOverlay><OrderDetails /></ModalOverlay>
+                  <Modal><OrderDetails /></Modal>
                 </ProtectedRoute>
                 <Route>
                   <NotFoundPage />
                 </Route>
               </Switch>
               <Switch>
-                {background && <Route path="/ingredients/:id"><ModalOverlay><IngredientDetails /></ModalOverlay></Route>}
+                {background && <Route path="/ingredients/:id"><Modal><IngredientDetails /></Modal></Route>}
               </Switch>
             </main>
       </DndProvider>

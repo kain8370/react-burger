@@ -10,8 +10,6 @@ import { REGISTER_USER_REQUEST,
          RESET_PASSWORD_FAILED,
          FORGOT_PASSWORD,
          FORGOT_PASSWORD_FAILED,
-         REFRESH_TOKEN,
-         REFRESH_TOKEN_FAILED,
          GET_USER,
          GET_USER_FAILED,
          REFRESH_USER,
@@ -241,7 +239,6 @@ export const getUser = () => {
       }
     })
     .catch(err => {
-      console.log(err);
       if (err.status === 403) {
         dispatch(refreshToken());
       } else {
@@ -274,7 +271,6 @@ export const refreshUser = (userData) => {
       }
     })
     .catch(err => {
-      console.log(err);
       if (err.status === 403) {
         dispatch(refreshToken());
       } else {

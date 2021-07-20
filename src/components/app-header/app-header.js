@@ -1,5 +1,5 @@
 import React from 'react';
-import { Logo, BurgerIcon, ListIcon, ProfileIcon, LogoutIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import appHeader from './app-header.module.css';
 import HeaderItem from '../header-item/header-item';
@@ -18,7 +18,7 @@ const AppHeader = React.memo(() => {
     },
     {
       iconName: Logo,
-      text: null,
+      text: "",
       to: '/'
     },
     {

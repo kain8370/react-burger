@@ -1,7 +1,7 @@
 import React from 'react';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch } from 'react-redux';
-import { refreshUser, getUser } from '../../services/actions/user';
+import { refreshUser } from '../../services/actions/user';
 import { useSelector } from 'react-redux';
 
 import editProfileStyle from './edit-profile.module.css';
@@ -15,7 +15,7 @@ const EditProfile = () => {
 
   const oldName = user?.name;
   const oldEmail = user?.email;
-  console.log(oldName);
+
   const [ email, setEmail ] = React.useState(oldEmail);
   const [ name, setName ] = React.useState(oldName);
   const [ password, setPassword ] = React.useState();

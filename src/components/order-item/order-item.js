@@ -1,8 +1,6 @@
 import React from 'react';
 
-import orderItemStyle from './order-item.module.css';
-
-const OrderItem = porps => {
+const OrderItem = () => {
   return (
     <div>
       Some text

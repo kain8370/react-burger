@@ -14,7 +14,7 @@ const ForgotPassword = () => {
   const classNameLink = `text text_type_main-default text_color_inactive ${forgotPasswordStyle.link}`;
   const classNameInputContainer = `mt-6 ${forgotPasswordStyle.inputContainer}`;
 
-  const [ email, setEmail ] = React.useState();
+  const [ email, setEmail ] = React.useState('');
   const dispatch = useDispatch();
   const { forgotPasswordSuccess } = useSelector(store => ({forgotPasswordSuccess: store.userReducer.forgotPasswordSuccess}));
   const history = useHistory();
@@ -40,7 +40,7 @@ const ForgotPassword = () => {
       <h3 className="text text_type_main-medium mb-0 mt-0">Восстановление пароля</h3>
       <form className={forgotPasswordStyle.forgotPasswordForm} onSubmit={onSubmit}>
         <div className={classNameInputContainer}>
-          <Input type="email" name="email" placeholder="E-mail" size="default" onChange={onChange} />
+          <Input type="email" name="email" placeholder="E-mail" size="default" onChange={onChange} value={email} />
         </div>
         <div className="mb-20 mt-6">
           <Button type="primary" size="medium">

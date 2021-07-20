@@ -13,8 +13,8 @@ const Login = () => {
   const classNameLink = `text text_type_main-default text_color_inactive ${loginStyle.link}`;
   const classNameInputContainer = `mt-6 ${loginStyle.inputContainer}`;
 
-  const [ email, setEmail ] = React.useState();
-  const [ password, setPassword ] = React.useState();
+  const [ email, setEmail ] = React.useState('');
+  const [ password, setPassword ] = React.useState('');
   const dispatch = useDispatch();
   const { user } = useSelector(store => ({ user: store.userReducer.user }));
   const history = useHistory();
@@ -41,10 +41,10 @@ const Login = () => {
       <h3 className="text text_type_main-medium mb-0 mt-0">Вход</h3>
       <form className={loginStyle.loginForm} onSubmit={onSubmit}>
         <div className={classNameInputContainer}>
-          <Input type="email" name="email" placeholder="E-mail" size="default" onChange={onChange} />
+          <Input type="email" name="email" placeholder="E-mail" value={email} size="default" onChange={onChange} />
         </div>
         <div className={classNameInputContainer}>
-          <Input type="password" name="password" size="default" placeholder="Пароль" icon="ShowIcon" onChange={onChange} />
+          <Input type="password" name="password" size="default" value={password} placeholder="Пароль" icon="ShowIcon" onChange={onChange} />
         </div>
         <div className="mb-20 mt-6">
           <Button type="primary" size="medium">

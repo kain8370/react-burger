@@ -1,19 +1,7 @@
 import React from 'react';
 
 import ingredientDetailsStyle from './ingredient-details.module.css';
-import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-
-const ingredientDetailsPropTypes = PropTypes.shape({
-  _id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  calories: PropTypes.number.isRequired,
-  image_large: PropTypes.string.isRequired,
-  proteins: PropTypes.number.isRequired,
-  fat: PropTypes.number.isRequired,
-  carbohydrates: PropTypes.number.isRequired,
-});
 
 function IngredientDetails() {
   const classNameItemName = `${ingredientDetailsStyle.name} text text_type_main-medium`;
@@ -22,10 +10,8 @@ function IngredientDetails() {
   const classNameTitle = `${ingredientDetailsStyle.title} text text_type_main-large`;
 
   const history = useHistory();
-  const id = history.location.pathname.split(':')[1];
-  console.log(history);
   const data = history.location.state?.data;
-  console.log(data, id);
+
   return (
     <>
       <h3 className={classNameTitle}>Детали ингредиента</h3>
@@ -56,12 +42,6 @@ function IngredientDetails() {
       </div>
     </>
   )
-}
-
-IngredientDetails.propTypes = {
-  data: ingredientDetailsPropTypes,
-  onClose: PropTypes.func,
-  already: PropTypes.bool,
 }
 
 export default IngredientDetails;

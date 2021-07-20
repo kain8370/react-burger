@@ -49,7 +49,7 @@ const ConstructorIngredient = React.memo((props) => {
       },
   });
 
-  const [{isDragging}, drag] = useDrag({
+  const [, drag] = useDrag({
     type: 'remove-ingredient',
     item: () => {
         return { id: props.item._id, index: props.index };
@@ -60,8 +60,6 @@ const ConstructorIngredient = React.memo((props) => {
   });
 
   drag(drop(ref));
-
-  const opacity = isDragging ? 0 : 1;
 
   return (
      <div className={constructoringredientStyle.ingredient} ref={ref}>

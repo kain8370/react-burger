@@ -9,6 +9,7 @@ import { useDrag } from 'react-dnd';
 import { Link, useLocation } from 'react-router-dom';
 
 const Ingredient = React.memo((props) => {
+  
   const id = props.id;
   const ingredientName = "text text_type_main-default " + ingredientStyle.name;
   const dispatch = useDispatch();
