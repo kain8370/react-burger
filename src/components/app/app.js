@@ -7,22 +7,48 @@ import ModalOverlay from '../modal-overlay/modal-overlay';
 import { useSelector } from 'react-redux';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
+import LoginPage from '../../pages/login-page/login-page';
+import RegisterPage from '../../pages/register-page/register-page';
+import ForgotPasswordPage from '../../pages/forgot-password-page/forgot-password-page';
+import { BrowserRouter as Router, Switch, Route, useLocation, useHistory } from 'react-router-dom';
+import ResetPasswordPage from '../../pages/reset-password-page/reset-password-page';
+import ProfilePage from '../../pages/profile-page/profile-page';
+import FeedPage from '../../pages/feed-page/feed-page';
+import NotFoundPage from '../../pages/not-found-page/not-found-page';
+import IngredientPage from '../../pages/ingredient-page/ingredient-page';
 
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { useDispatch } from 'react-redux';
+import { getUser } from '../../services/actions/user';
+import ProtectedRoute from '../protected-route/protected-route';
 
 import app from './app.module.css';
 
 const App = () => {
+  const ModalSwitch = () => {
 
-  const { currentIngredientVisible,
-          order } = useSelector(store => ({
-                                                      currentIngredientVisible: store.ingredientsReducer.currentIngredientVisible,
-                                                      addedIngredients: store.ingredientsReducer.addedIngredients,
-                                                      order: store.ingredientsReducer.order
-                                                      }));
+    const { currentIngredientVisible,
+      order } = useSelector(store => ({
+                                                  currentIngredientVisible: store.ingredientsReducer.currentIngredientVisible,
+                                                  addedIngredients: store.ingredientsReducer.addedIngredients,
+                                                  order: store.ingredientsReducer.order
+                                                  }));
 
-  const mainContent = (
+    const user = useSelector(store => store.userReducer.user);
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const history = useHistory();
+    let background = history.action === 'PUSH' && location.state && location.state.background;
+    console.log(location.state);
+
+    React.useEffect(() => {
+    if (!user) {
+      dispatch(getUser());
+    }
+    }, []);
+
+    const mainContent = (
     <>
       <h2 className="text text_type_main-large title">
             Соберите бургер
@@ -32,21 +58,62 @@ const App = () => {
         <BurgerConstructor />
       </div>
     </>
-  );
-  const content =  mainContent;
+    );
+    const content =  mainContent;
 
-  return (
+    return (
     <div className={app.app}>
-      <AppHeader />
       <DndProvider backend={HTML5Backend}>
-        <main className={app.main}>
-          {content}
-        </main>
+            <AppHeader />
+            <main className={app.main}>
+              <Switch location={background || location}>
+                <Route path="/" exact={true}>
+                  {content}
+                </Route>
+                <Route path="/login" exact={true}>
+                  <LoginPage />
+                </Route>
+                <Route path="/register" exact={true}>
+                  <RegisterPage />
+                </Route>
+                <Route path="/forgot-password" exact={true}>
+                  <ForgotPasswordPage />
+                </Route>
+                <Route path="/reset-password" exact={true}>
+                  <ResetPasswordPage />
+                </Route>
+                <ProtectedRoute path="/profile" exact={true}>
+                  <ProfilePage />
+                </ProtectedRoute>
+                <ProtectedRoute path="/profile/orders" exact={true}>
+                  <ProfilePage />
+                </ProtectedRoute>
+                <ProtectedRoute path="/feed" exact={true}>
+                  <FeedPage />
+                </ProtectedRoute>
+                <Route path="/ingredients/:id" exact={true}>
+                 <IngredientPage />
+                </Route>
+                <ProtectedRoute path="/order" exact={true}>
+                  <ModalOverlay><OrderDetails /></ModalOverlay>
+                </ProtectedRoute>
+                <Route>
+                  <NotFoundPage />
+                </Route>
+              </Switch>
+              <Switch>
+                {background && <Route path="/ingredients/:id"><ModalOverlay><IngredientDetails /></ModalOverlay></Route>}
+              </Switch>
+            </main>
       </DndProvider>
-      
-      {currentIngredientVisible && <ModalOverlay><IngredientDetails /></ModalOverlay>}
-      { order.orderNumber  && <ModalOverlay /*onChangeVisible={setState}>*/><OrderDetails  /></ModalOverlay>}
     </div>
+    );
+
+  }
+  return (
+  <Router>
+    <ModalSwitch/>
+  </Router>
   );
 }
 

@@ -6,6 +6,9 @@ import vector2 from '../../images/vector2.svg';
 import vector3 from '../../images/vector3.svg';
 import icon from '../../images/icon.svg';
 import { useSelector } from 'react-redux';
+import { getOrder } from '../../services/actions/get-order';
+import { SET_TOTAL_PRICE } from '../../services/constants';
+import { useDispatch } from 'react-redux';
 
 import PropTypes from 'prop-types';
 
@@ -13,9 +16,34 @@ import PropTypes from 'prop-types';
 
 const OrderDetails = () => {
 
-  const order = useSelector( store => store.ingredientsReducer.order );
-  console.log(order);
+  const { addedBuns, ingredientsCount } = useSelector( store => ({ addedBuns: store.ingredientsReducer.addedBuns, ingredientsCount: store.ingredientsReducer.ingredientsCount }));
+  const order = useSelector(store => store.ingredientsReducer.order);
+  const dispatch = useDispatch();
+
   const classNameVector1 = `${orderDetailsStyle.vector} ${orderDetailsStyle.vector1}`;
+
+  const sendOrder = () => {
+    if (localStorage.getItem('userName')){
+      const orderData = Object.entries(ingredientsCount).reduce((acc, [id, count]) => {
+        if (count) {
+          const tmpArr = []
+          for (let i = 0; i < count; i++) {
+            tmpArr.push(id);
+          }
+          acc.push(...tmpArr);
+        }
+        return acc;
+      }, []);
+      addedBuns.bun?._id && orderData.push(addedBuns.bun._id);
+      dispatch(getOrder(orderData));
+    }
+    return;
+  }
+
+  React.useEffect(() => {
+    sendOrder();
+  }, [])
+
   return (
     <div className={orderDetailsStyle.container}>
       <div className="text text_type_digits-large mt-20"> 

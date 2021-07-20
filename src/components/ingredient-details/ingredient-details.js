@@ -3,6 +3,7 @@ import React from 'react';
 import ingredientDetailsStyle from './ingredient-details.module.css';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 const ingredientDetailsPropTypes = PropTypes.shape({
   _id: PropTypes.string.isRequired,
@@ -20,8 +21,11 @@ function IngredientDetails() {
   const classNameInfoItem = `${ingredientDetailsStyle.ingredientInfoItem} text text_type_main-default text_color_inactive`;
   const classNameTitle = `${ingredientDetailsStyle.title} text text_type_main-large`;
 
-  const data = useSelector(store => store.ingredientsReducer.currentIngredient);
-
+  const history = useHistory();
+  const id = history.location.pathname.split(':')[1];
+  console.log(history);
+  const data = history.location.state?.data;
+  console.log(data, id);
   return (
     <>
       <h3 className={classNameTitle}>Детали ингредиента</h3>

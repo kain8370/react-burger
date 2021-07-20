@@ -1,16 +1,16 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 import headerItem from './header-item.module.css';
 
-class HeaderItem extends React.Component {
+const HeaderItem = props => {
 
-  render() {
-    const classNameItem = `${headerItem.item} text text_type_main-default`;
-    const classNameText = this.props.isActive ? `${headerItem.text} ${headerItem.active}` : headerItem.text;
-    return (
-      <li className={classNameItem}>{this.props.icon}{this.props.text ? <span className={classNameText}>{this.props.text}</span> : null}</li>
-    );
-  }
+  const classNameItem = `${headerItem.item} text text_type_main-default`;
+
+  return (
+    <li className={classNameItem}><NavLink exact={props.to === '/' ? true : false} activeClassName={headerItem.active} className={headerItem.link} to={props.to}>{<props.icon type="secondary" />}{props.text ? <span className={headerItem.text}>{props.text}</span> : null}</NavLink></li>
+  );
+
 }
 
 export default HeaderItem;

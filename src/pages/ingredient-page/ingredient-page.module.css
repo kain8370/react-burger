@@ -1,0 +1,34 @@
+.container {
+  margin: auto;
+  max-width: 580px;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.ingredientDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.description {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.ingredientInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-self: stretch;
+}
+
+.ingredientInfoItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

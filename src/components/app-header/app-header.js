@@ -1,5 +1,5 @@
 import React from 'react';
-import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Logo, BurgerIcon, ListIcon, ProfileIcon, LogoutIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import appHeader from './app-header.module.css';
 import HeaderItem from '../header-item/header-item';
@@ -9,23 +9,22 @@ const AppHeader = React.memo(() => {
     {
       iconName: BurgerIcon,
       text: 'Конструктор',
-      isActive: true
+      to: '/'
     },
     {
       iconName: ListIcon,
       text: 'Лента заказов',
-      isActive: false
-
+      to: '/feed'
     },
     {
       iconName: Logo,
       text: null,
-      isActive: false
+      to: '/'
     },
     {
       iconName: ProfileIcon,
       text: 'Личный кабинет',
-      isActive: false
+      to: '/profile'
     }
   ]
   
@@ -33,12 +32,10 @@ const AppHeader = React.memo(() => {
     let i = null;
     if (item.iconName === 'Logo') {
       i = <Logo />;
-    } else if (item.isActive) {
-      i = <item.iconName type="primary" />;
     } else {
-      i = <item.iconName type="secondary" />;
+      i = item.iconName
     }
-    return <HeaderItem key={index + 1} icon={i} text={item.text} isActive={item.isActive} />
+    return <HeaderItem key={index + 1} icon={i} text={item.text} to={item.to} />
   });
   
   return (

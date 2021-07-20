@@ -20,7 +20,6 @@ export const getOrder = (data) => {
         return Promise.reject(res.status)
       })
       .then(res => {
-        console.log(res);
         dispatch({
           type: GET_ORDER_SUCCESS,
           order: res.order,
@@ -28,7 +27,6 @@ export const getOrder = (data) => {
         });
       })
       .catch(err => {
-        console.log(err);
         dispatch({
           type: GET_ORDER_FAILED,
         })
