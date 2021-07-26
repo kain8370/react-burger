@@ -15,7 +15,7 @@ const constructorIngredientPropTypes = PropTypes.shape({
   price: PropTypes.number.isRequired,
 });
 
-const ConstructorIngredient = (props) => {
+const ConstructorIngredient = React.memo((props) => {
   const ref = React.useRef(null);
   const dispatch = useDispatch();
 
@@ -49,7 +49,7 @@ const ConstructorIngredient = (props) => {
       },
   });
 
-  const [{isDragging}, drag] = useDrag({
+  const [, drag] = useDrag({
     type: 'remove-ingredient',
     item: () => {
         return { id: props.item._id, index: props.index };
@@ -61,8 +61,6 @@ const ConstructorIngredient = (props) => {
 
   drag(drop(ref));
 
-  const opacity = isDragging ? 0 : 1;
-
   return (
      <div className={constructoringredientStyle.ingredient} ref={ref}>
       <span className={constructoringredientStyle.dragIcon}><DragIcon /></span>
@@ -73,7 +71,7 @@ const ConstructorIngredient = (props) => {
       handleClose={e => dispatch({type: REMOVE_INGREDIENT, ingredient: props.item})}/>
     </div>
   )
-}
+})
 
 ConstructorIngredient.propTypes = {
   item: constructorIngredientPropTypes,

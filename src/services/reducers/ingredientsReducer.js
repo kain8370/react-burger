@@ -11,7 +11,10 @@ import { GET_INGREDIENTS_REQUEST,
          GET_ORDER_SUCCESS,
          GET_ORDER_FAILED,
          CLEAN_ORDER,
-         SORT_INGREDIENTS} from "../constants";
+         SORT_INGREDIENTS,
+         RESET_ADDED_BUNS,
+         RESET_ADDED_INGREDIENTS,
+         RESET_INGREDIENTS_COUNT} from "../constants";
 
 const initialState = {
   ingredients: [],
@@ -79,6 +82,27 @@ export const ingredientsReducer = (state = initialState, action) => {
       return {
         ...state,
         addedBuns: {bun: action.ingredient, count: 2}
+      }
+    }
+
+    case RESET_ADDED_BUNS: {
+      return {
+        ...state,
+        addedBuns: {}
+      }
+    }
+
+    case RESET_INGREDIENTS_COUNT: {
+      return {
+        ...state,
+        ingredientsCount: {}
+      }
+    }
+
+    case RESET_ADDED_INGREDIENTS: {
+      return {
+      ...state,
+      addedIngredients: []
       }
     }
 

@@ -4,41 +4,38 @@ import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-dev
 import appHeader from './app-header.module.css';
 import HeaderItem from '../header-item/header-item';
 
-const AppHeader = () => {
+const AppHeader = React.memo(() => {
   const items = [
     {
       iconName: BurgerIcon,
       text: 'Конструктор',
-      isActive: true
+      to: '/'
     },
     {
       iconName: ListIcon,
       text: 'Лента заказов',
-      isActive: false
-
+      to: '/feed'
     },
     {
       iconName: Logo,
-      text: null,
-      isActive: false
+      text: "",
+      to: '/'
     },
     {
       iconName: ProfileIcon,
       text: 'Личный кабинет',
-      isActive: false
+      to: '/profile'
     }
   ]
   
   const headerElements = items.map((item, index) => {
-    let i = '';
+    let i = null;
     if (item.iconName === 'Logo') {
       i = <Logo />;
-    } else if (item.isActive) {
-      i = <item.iconName type="primary" />;
     } else {
-      i = <item.iconName type="secondary" />;
+      i = item.iconName
     }
-    return <HeaderItem key={index + 1} icon={i} text={item.text} isActive={item.isActive} />
+    return <HeaderItem key={index + 1} icon={i} text={item.text} to={item.to} />
   });
   
   return (
@@ -47,6 +44,6 @@ const AppHeader = () => {
         {headerElements}
       </ul>
       </header>
-)};
+)})
 
 export default AppHeader;

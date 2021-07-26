@@ -25,6 +25,16 @@
   line-height: 24px;
 }
 
-.active {
+.active > * {
   color: #f2f2f3;
+  fill: #f2f2f3;
+}
+
+.link {
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: #8585ad;
+  text-decoration: none;
 }

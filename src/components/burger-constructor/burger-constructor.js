@@ -7,11 +7,11 @@ import ConstructorIngredient from '../constructor-ingredient/constructor-ingredi
 
 import burgerConstructorStyle from './burger-constructor.module.css';
 import { ADD_INGREDIENT, ADD_BUN, SET_TOTAL_PRICE } from '../../services/constants';
-import { getOrder } from '../../services/actions/get-order';
+import { Link } from 'react-router-dom';
 
-const BurgerConstructor = () => {
+const BurgerConstructor = React.memo(() => {
 
-  const { ingredients, addedIngredients, addedBuns, ingredientsCount, totalPrice } = useSelector(store => ({ ingredients: store.ingredientsReducer.ingredients, addedIngredients: store.ingredientsReducer.addedIngredients, addedBuns: store.ingredientsReducer.addedBuns, ingredientsCount: store.ingredientsReducer.ingredientsCount, totalPrice: store.ingredientsReducer.totalPrice }));
+  const { ingredients, addedIngredients, addedBuns, totalPrice } = useSelector(store => ({ ingredients: store.ingredientsReducer.ingredients, addedIngredients: store.ingredientsReducer.addedIngredients, addedBuns: store.ingredientsReducer.addedBuns, totalPrice: store.ingredientsReducer.totalPrice }));
   const dispatch = useDispatch();
 
   const [, dropTarget] = useDrop({
@@ -24,35 +24,19 @@ const BurgerConstructor = () => {
 
   const elements = addedIngredients.map((item, index) => {
     return (
-      <ConstructorIngredient key={index} item={item} index={index} />
+    <ConstructorIngredient key={index} item={item} index={index} />
     )
   })
 
-  const setTotalPrice = () => {
-    console.log(addedIngredients);
+  const getTotalPrice = React.useCallback(() => {
     const ingredientsPrice = addedIngredients.reduce((acc, item) =>  acc + item.price, 0)
     const bunsPrice = addedBuns?.bun ? addedBuns.bun.price * addedBuns.count : 0;
     dispatch({type: SET_TOTAL_PRICE, totalPrice: ingredientsPrice + bunsPrice})
-  }
-
-  const sendOrder = () => {
-    const orderData = Object.entries(ingredientsCount).reduce((acc, [id, count]) => {
-      if (count) {
-        const tmpArr = []
-        for (let i = 0; i < count; i++) {
-          tmpArr.push(id);
-        }
-        acc.push(...tmpArr);
-      }
-      return acc;
-    }, []);
-    addedBuns.bun?._id && orderData.push(addedBuns.bun._id);
-    dispatch(getOrder(orderData));
-  }
+  }, [addedBuns, addedIngredients, dispatch])
 
   React.useEffect(() => {
-   setTotalPrice();
-  }, [addedIngredients, addedBuns])
+    getTotalPrice();
+   }, [addedIngredients, addedBuns, getTotalPrice])
 
   return (
     <div className={burgerConstructorStyle.wrapper} ref={dropTarget}>
@@ -71,13 +55,15 @@ const BurgerConstructor = () => {
           thumbnail={addedBuns.bun.image} />} 
     <div className={burgerConstructorStyle.order}>
     <p className="text text_type_digits-medium">{totalPrice}</p><div className="ml-3 mr-10"><CurrencyIcon type="primary" /></div>
-      <Button type="primary" size="medium" onClick={() => {sendOrder()}}>
+      {addedBuns.count ? <Link to='/order'><Button type="primary" size="medium">
         Оформить заказ
-      </Button>
+      </Button></Link> : <Button type="secondary" size="medium">
+        Оформить заказ
+      </Button>}
     </div>
     
   </div>  
   );
-}
+})
 
 export default BurgerConstructor;
