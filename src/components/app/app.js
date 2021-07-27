@@ -22,6 +22,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useDispatch } from 'react-redux';
 import { getUser } from '../../services/actions/user';
 import ProtectedRoute from '../protected-route/protected-route';
+import OrderInfo from '../order-info/order-info';
 
 import app from './app.module.css';
 
@@ -96,6 +97,7 @@ const App = () => {
               <Switch>
                 {background && <Route path="/ingredients/:id"><Modal><IngredientDetails /></Modal></Route>}
               </Switch>
+              <OrderInfo />
             </main>
       </DndProvider>
     </div>
