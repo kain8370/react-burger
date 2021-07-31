@@ -7,12 +7,14 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 36px;
-  margin-bottom: 60px;
+  margin-bottom: 50px;
 }
 
 .numbers {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(5, auto);
+  max-height: 34vh;
+  column-gap: 8px;
 }
 
 .ready {

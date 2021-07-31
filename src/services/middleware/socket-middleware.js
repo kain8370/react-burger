@@ -1,22 +1,30 @@
 import { WS_CONNECTION_START,
          WS_CONNECTION_SUCCESS,
          WS_CONNECTION_ERROR,
-         WS_GET_MESSAGE,
-         WS_CONNECTION_CLOSE } from "../constants"; 
+         WS_CONNECTION_CLOSE,
+         WS_GET_ORDERS } from "../constants"; 
+
+import { getCookie } from "../../utils/cookie";
 
 export const socketMiddleware = (wsUrl) => {
   return store => {
     let socket = null;
     return next => action => {
-      const { dispatch, getState } = store;
-      const { type, payload } = action;
+      
+      const { dispatch } = store;
+      const { type } = action;
+      const token = getCookie('token').replace('Bearer ', '');
+      const USER_ORDER_URL = `wss://norma.nomoreparties.space/orders?token=${token}`
 
       if (type === WS_CONNECTION_START) {
-        socket = new WebSocket(wsUrl);
+        if (!action.userOrders) {
+          socket = new WebSocket(wsUrl);
+        } else {
+          socket = new WebSocket(USER_ORDER_URL);
+        }
       }
 
       if (socket) {
-
         socket.onopen = event => {
           dispatch({ type: WS_CONNECTION_SUCCESS, payload: event });
         }
@@ -26,8 +34,8 @@ export const socketMiddleware = (wsUrl) => {
         }
 
         socket.onmessage = event => {
-          const { data } = event;
-          dispatch({ type: WS_GET_MESSAGE, payload: data });
+          const { orders, total, totalToday } = JSON.parse(event.data);
+          dispatch({ type: WS_GET_ORDERS, payload: { orders, total, totalToday }});
         }
 
         socket.onclose = event => {

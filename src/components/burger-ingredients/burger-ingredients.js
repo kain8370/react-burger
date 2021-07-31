@@ -2,8 +2,7 @@ import React from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import burgerIngredientsStyle from './burger-ingredients.module.css';
 import Ingredient from '../ingredient/ingredient';
-import { useSelector, useDispatch } from 'react-redux';
-import { getIngredients } from '../../services/actions/ingredients';
+import { useSelector } from 'react-redux';
 
 const BurgerIngredients = React.memo(() => {
     const [current , setCurrent] = React.useState("Булки")
@@ -14,12 +13,6 @@ const BurgerIngredients = React.memo(() => {
     const mainRef = React.useRef(null);
     const bunRef = React.useRef(null);
     const sauceRef = React.useRef(null);
-
-    const dispatch = useDispatch();
-
-    React.useEffect(() => {
-      dispatch(getIngredients());
-    }, [dispatch])
 
     const onScroll = () => {
 

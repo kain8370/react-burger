@@ -3,6 +3,7 @@ import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-component
 import { useDispatch } from 'react-redux';
 import { refreshUser } from '../../services/actions/user';
 import { useSelector } from 'react-redux';
+import { getUser } from '../../services/actions/user';
 
 import editProfileStyle from './edit-profile.module.css';
 
@@ -15,6 +16,12 @@ const EditProfile = () => {
 
   const oldName = user?.name;
   const oldEmail = user?.email;
+
+  React.useEffect(() => {
+  if (!user) {
+    dispatch(getUser());
+  }
+  }, [dispatch, user]);
 
   const [ email, setEmail ] = React.useState(oldEmail);
   const [ name, setName ] = React.useState(oldName);

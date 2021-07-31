@@ -1,17 +1,21 @@
 import { GET_ORDER_REQUEST,
          GET_ORDER_SUCCESS,
          GET_ORDER_FAILED } from '../constants';
+import { getCookie } from '../../utils/cookie';
 
 const ORDER_URL = 'https://norma.nomoreparties.space/api/orders';
 
 export const getOrder = (data) => {
   return dispatch => {
     const body = { ingredients: data};
+    const token = getCookie("token");
+    console.log(token);
     dispatch({ type: GET_ORDER_REQUEST })
     fetch(ORDER_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
+        Authorization: token
       },
       body: JSON.stringify(body)
     })

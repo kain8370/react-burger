@@ -6,5 +6,6 @@ import { wsReducer } from './wsReducer';
 
 export const rootReducer = combineReducers({
   ingredientsReducer: ingredientsReducer,
-  userReducer: userReducer
+  userReducer: userReducer,
+  wsReducer: wsReducer
 })
