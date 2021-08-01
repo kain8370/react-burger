@@ -13,7 +13,7 @@ export const socketMiddleware = (wsUrl) => {
       
       const { dispatch } = store;
       const { type } = action;
-      const token = getCookie('token').replace('Bearer ', '');
+      const token = getCookie('token')?.replace('Bearer ', '');
       const USER_ORDER_URL = `wss://norma.nomoreparties.space/orders?token=${token}`
 
       if (type === WS_CONNECTION_START) {
