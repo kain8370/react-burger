@@ -9,7 +9,7 @@ import orderStyle from './order.module.css';
 const orderPropTypes = PropTypes.shape({
   ingredients: PropTypes.array.isRequired,
   number: PropTypes.number.isRequired,
-  createAt: PropTypes.string.isRequired,
+  createdAt: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired
 });
 
@@ -37,7 +37,7 @@ const Order = React.memo(props => {
   const date = new Date(props.order.createdAt);
 
   const price = ingredients.reduce((acc, item) => {
-    return acc += item.type === 'bun' ? item.price * 2 : item.price;
+    return acc += item.price;
   }, 0);
 
   const priceClassName = `text text_type_digits-default ${orderStyle.price}`;
@@ -69,7 +69,7 @@ const Order = React.memo(props => {
   )
 });
 
-Order.PropTypes = {
+Order.propTypes = {
   order: orderPropTypes.isRequired
 }
 

@@ -15,8 +15,6 @@ const OrdersInfo = () => {
 
   const ordersPending = orders.filter(item => item.status === 'pending')
 
-  console.log(ordersDone, ordersPending)
-
   return (
     <div className={ordersInfoStyle.ordersInfo}>
         <div className={ordersInfoStyle.row}>
@@ -25,9 +23,9 @@ const OrdersInfo = () => {
               Готовы:
             </h4>
             <div className={ordersInfoStyle.numbers}>
-              {ordersDone.length && ordersDone.map(item => {
+              {ordersDone.length && ordersDone.map((item, index) => {
                 return (
-                  <span className={ready}>
+                  <span className={ready} key={index}>
                     {item.number}
                   </span>
                 )
@@ -39,9 +37,9 @@ const OrdersInfo = () => {
               В работе:
             </h4>
             <div className={ordersInfoStyle.numbers}>
-              {ordersPending.length ? ordersPending.map(item => {
+              {ordersPending.length ? ordersPending.map((item, index) => {
                 return (
-                  <span className='text text_type_digits-default mb-2'>
+                  <span className='text text_type_digits-default mb-2' key={index}>
                     {item.number}
                   </span>
                 )

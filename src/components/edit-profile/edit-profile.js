@@ -75,13 +75,13 @@ const EditProfile = () => {
     <div className={editProfileStyle.container}>
       <form className={editProfileStyle.editProfileForm} onSubmit={onSubmit}>
         <div className={editProfileStyle.inputContainer}>
-          <Input type="text" name="name" value={name} placeholder="Имя" size="default" icon="EditIcon" onChange={onChange} />
+          <Input type="text" name="name" value={oldName} placeholder="Имя" size="default" icon="EditIcon" onChange={onChange} />
         </div>
         <div className={classNameInputContainer}>
-          <Input type="email" name="email" value={email} placeholder="Логин" icon="EditIcon" size="default" onChange={onChange} />
+          <Input type="email" name="email" value={oldEmail} placeholder="Логин" icon="EditIcon" size="default" onChange={onChange} />
         </div>
         <div className={classNameInputContainer}>
-          <Input type="password" name="password" value={password} placeholder="Пароль" icon="EditIcon" size="default" onChange={onChange} />
+          <Input type="password" name="password" value={password || ''} placeholder="Пароль" icon="EditIcon" size="default" onChange={onChange} />
         </div>
         <div className="mt-6">
           <Button type="primary" className="mr-30">Сохранить</Button><Button type="primary" onClick={onCancel}>Отмена</Button>

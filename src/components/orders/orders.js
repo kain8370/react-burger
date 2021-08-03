@@ -12,7 +12,7 @@ const Orders = () => {
 
   React.useEffect(() => {
     dispatch({ type: WS_CONNECTION_START, userOrders: true })
-  }, []);
+  }, [dispatch]);
 
   const orders = useSelector(store => store.wsReducer.orders);
   const newOrders = orders?.length && [...orders].reverse();

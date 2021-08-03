@@ -17,9 +17,10 @@ const FeedPage = () => {
 
   React.useEffect(() => {
     dispatch({ type: WS_CONNECTION_START })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const ordersElements = orders?.length &&orders.map((item, index) => {
+  const ordersElements = orders?.length && orders.map((item, index) => {
     return <Link to={{ pathname: `/feed/${item._id}`, state: {background: location, data: item} }} className={feedPageStyle.link} key={index} ><Order key={index} order={item} /></Link>
   })
 
