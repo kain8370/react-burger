@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import EditProfile from '../../components/edit-profile/edit-profile';
-import {Route} from 'react-router-dom';
+import ProtectedRoute from '../../components/protected-route/protected-route';
 import Orders from '../../components/orders/orders';
 import { useDispatch } from 'react-redux';
 import { resetUser } from '../../services/actions/user';
@@ -35,13 +35,13 @@ const ProfilePage = () => {
           В этом разделе вы можете изменить свои персональные данные
         </p>
       </div>
-      <Route path="/profile" exact={true}>
+      <ProtectedRoute path="/profile" exact={true}>
         <EditProfile />
-      </Route>
+      </ProtectedRoute>
       
-      <Route path="/profile/orders" exact={true}>
+      <ProtectedRoute path="/profile/orders" exact={true}>
         <Orders />
-      </Route>
+      </ProtectedRoute>
       
     </div>
   )

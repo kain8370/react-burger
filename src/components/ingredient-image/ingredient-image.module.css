@@ -1,0 +1,42 @@
+.ingredient {
+  display: flex;
+  width: 64px;
+  height: 64px;
+  position: relative;
+  margin-right: -14px;
+}
+
+.ingredient::after {
+  content: "";
+  position: absolute;
+  width: 68px;
+  height: 68px;
+  background-image: linear-gradient(to left, #801ab3 0%, #4c4cff 100%);
+  border-radius: 50%;
+  top: -3px;
+  left: -3px;
+  z-index: -3;
+}
+.ingredient::before {
+  content: "";
+  position: absolute;
+  width: 64px;
+  height: 62px;
+  background-color: #131316;
+  border-radius: 50%;
+  top: 0px;
+  left: -1px;
+  z-index: -2;
+}
+
+.image {
+  max-width: 100%;
+  object-fit: cover;
+}
+
+.count {
+  position: absolute;
+  top: 17px;
+  left: 20px;
+  color: #fff;
+}

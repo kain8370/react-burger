@@ -1,10 +1,21 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import ordersInfoStyle from './orders-info.module.css';
 
 const OrdersInfo = () => {
 
   const ready = `text text_type_digits-default mb-2 ${ordersInfoStyle.ready}`;
+
+  const total = useSelector(store => store.wsReducer.total);
+  const totalToday = useSelector(store => store.wsReducer.totalToday);
+  const orders = useSelector(store => store.wsReducer.orders);
+
+  const ordersDone = orders.filter(item => item.status === 'done')
+
+  const ordersPending = orders.filter(item => item.status === 'pending')
+
+  console.log(ordersDone, ordersPending)
 
   return (
     <div className={ordersInfoStyle.ordersInfo}>
@@ -14,21 +25,13 @@ const OrdersInfo = () => {
               Готовы:
             </h4>
             <div className={ordersInfoStyle.numbers}>
-              <span className={ready}>
-                034533
-              </span>
-              <span className={ready}>
-                034532
-              </span>
-              <span className={ready}>
-                034530
-              </span>
-              <span className={ready}>
-                034527
-              </span>
-              <span className={ready}>
-                034525
-              </span>
+              {ordersDone.length && ordersDone.map(item => {
+                return (
+                  <span className={ready}>
+                    {item.number}
+                  </span>
+                )
+              })}
             </div>
           </div>
           <div>
@@ -36,15 +39,13 @@ const OrdersInfo = () => {
               В работе:
             </h4>
             <div className={ordersInfoStyle.numbers}>
-              <span className='text text_type_digits-default mb-2'>
-                034538
-              </span>
-              <span className='text text_type_digits-default mb-2'>
-                034541
-              </span>
-              <span className='text text_type_digits-default mb-2'>
-                034542
-              </span>
+              {ordersPending.length ? ordersPending.map(item => {
+                return (
+                  <span className='text text_type_digits-default mb-2'>
+                    {item.number}
+                  </span>
+                )
+              }) : null}
             </div>
           </div>
         </div>
@@ -53,8 +54,8 @@ const OrdersInfo = () => {
           Выполнено за все время:
         </div>
 
-        <div className={`text text_type_digits-large  mb-15 ${ordersInfoStyle.digital}`}>
-          28 752
+        <div className={`text text_type_digits-large mb-6 ${ordersInfoStyle.digital}`}>
+          {total}
         </div>
 
         <div className="text text_type_main-medium">
@@ -62,7 +63,7 @@ const OrdersInfo = () => {
         </div>
 
         <div className={`text text_type_digits-large ${ordersInfoStyle.digital}`}>
-          138
+          {totalToday}
         </div>
 
         </div>
