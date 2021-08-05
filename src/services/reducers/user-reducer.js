@@ -143,7 +143,7 @@ export const userReducer = (state = initialState, action) => {
     case REFRESH_USER: {
       return {
         ...state,
-        refrestUserSuccess: true,
+        refreshUserSuccess: true,
         user: action.user
       }
     }
