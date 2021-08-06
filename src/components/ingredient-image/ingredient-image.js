@@ -1,5 +1,4 @@
 import React from 'react';
-import { isPropertySignature } from 'typescript';
 import PropTypes from 'prop-types';
 
 import ingredientImageStyle from './ingredient-image.module.css';
@@ -13,7 +12,7 @@ const IngredientImage = React.memo(props => {
   )
 });
 
-IngredientImage.PropTypes = {
+IngredientImage.propTypes = {
   count: PropTypes.number.isRequired
 }
 

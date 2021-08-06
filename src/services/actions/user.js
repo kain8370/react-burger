@@ -79,7 +79,6 @@ export const loginUser = (email, password) => {
       return res.ok ? res.json() : Promise.reject(res);
     })
     .then(res => {
-      console.log(res);
       if (res.success) {
         setCookie('token', res.accessToken);
         localStorage.setItem('token', res.refreshToken);
@@ -191,22 +190,22 @@ export const resetPassword = (password, code) => {
 
 export const refreshToken = () => {
   return dispatch => {
-    const token = localStorage.getItem('token');
+    const refreshToken = localStorage.getItem('token');
     fetch(REFRESH_TOKEN_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
       },
-      body: JSON.stringify({ 'token': token })
+      body: JSON.stringify({"token": refreshToken})
     })
     .then(res => {
       return res.ok ? res.json() : Promise.reject(res);
     })
     .then(res => {
       if (res.success) {
-        console.log(res);
         setCookie('token', res.accessToken);
         localStorage.setItem('token', res.refreshToken);
+        dispatch(getUser());
       } else {
         return Promise.reject(res);
       }
@@ -228,7 +227,6 @@ export const getUser = () => {
       }
     })
     .then(res => {
-      
       return res.ok ? res.json() : Promise.reject(res);
     })
     .then(res => {
@@ -265,7 +263,6 @@ export const refreshUser = (userData) => {
     .then(res => {
       if (res.success) {
         dispatch({ type: REFRESH_USER, user: res.user })
-        console.log(res);
       } else {
         return Promise.reject(res);
       }

@@ -4,7 +4,7 @@ import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-component
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../services/actions/user';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import loginStyle from './login.module.css';
 
@@ -17,7 +17,6 @@ const Login = () => {
   const [ password, setPassword ] = React.useState('');
   const dispatch = useDispatch();
   const { user } = useSelector(store => ({ user: store.userReducer.user }));
-  const history = useHistory();
 
   const onChange = e => {
     if (e.target.name === 'email') {
@@ -33,7 +32,7 @@ const Login = () => {
   }
 
   if (user) {
-    history.push('/');
+    return <Redirect to='/' />
   }
 
   return (
