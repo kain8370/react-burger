@@ -1,0 +1,25 @@
+.ordersContainer {
+  max-width: 844px;
+  width: 100%;
+  height: calc(100vh - 210px);
+  overflow-y: scroll;
+  scrollbar-width: 8px;
+  scrollbar-color: #8585ad #2f2f37;
+}
+
+.ordersContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ordersContainer::-webkit-scrollbar-track {
+  background-color: #2f2f37;
+}
+
+.ordersContainer::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+}
